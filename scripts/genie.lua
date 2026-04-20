@@ -176,6 +176,11 @@ newoption {
 }
 
 newoption {
+	trigger = "AR",
+	description = "AR replacement",
+}
+
+newoption {
 	trigger = "TOOLCHAIN",
 	description = "Toolchain prefix"
 }

@@ -319,6 +319,24 @@ ifndef NOASM
 endif
 endif
 
+# webOS
+ifneq (,$(or $(findstring webos,$(CROSS_COMPILE)),$(findstring starfish,$(CROSS_COMPILE))))
+  ARCHITECTURE :=
+  ifndef NOASM
+    NOASM := 1
+  endif
+  ifneq (,$(findstring starfish,$(CROSS_COMPILE)))
+    TOOLCHAIN_PREFIX = arm-starfishmllib32-linux-gnueabi-
+  else
+    TOOLCHAIN_PREFIX = arm-webos-linux-gnueabi-
+  endif
+  OVERRIDE_CC = $(TOOLCHAIN_PREFIX)gcc
+  OVERRIDE_CXX = $(TOOLCHAIN_PREFIX)g++
+  OVERRIDE_LD = $(TOOLCHAIN_PREFIX)ld
+  OVERRIDE_AR = $(TOOLCHAIN_PREFIX)ar
+  CROSS_BUILD = 1
+endif
+
 # Autodetect BIGENDIAN
 # MacOSX
 ifndef BIGENDIAN
@@ -463,6 +481,12 @@ ifdef OVERRIDE_LD
 PARAMS += --LD='$(OVERRIDE_LD)'
 ifndef CROSS_BUILD
 LD := $(OVERRIDE_LD)
+endif
+endif
+ifdef OVERRIDE_AR
+PARAMS += --AR='$(OVERRIDE_AR)'
+ifndef CROSS_BUILD
+AR := $(OVERRIDE_AR)
 endif
 endif
 
